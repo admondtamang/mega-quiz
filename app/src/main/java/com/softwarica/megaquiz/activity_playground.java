@@ -1,9 +1,11 @@
 package com.softwarica.megaquiz;
 
 import android.animation.Animator;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
@@ -41,11 +43,13 @@ public class activity_playground extends AppCompatActivity {
         noOfQuestion=findViewById(R.id.noOfQuestion);
 
         // Question added into array list
-        list.add(new Question("Where do you live?", "jungle", "house", "room", "earth","earth"));
-        list.add(new Question("Where do you live in?", "jungle", "house", "room", "earth","room"));
-        list.add(new Question("Where do you monkey live?", "jungle", "house", "room", "earth","jungle"));
-        list.add(new Question("Where do you put your cloth?", "daraz", "house", "room", "earth","daraz"));
+//        list.add(new Question("Where do you live?", "jungle", "house", "room", "earth","earth"));
+//        list.add(new Question("Where do you live in?", "jungle", "house", "room", "earth","room"));
+//        list.add(new Question("Where do monkey live?", "jungle", "house", "room", "earth","jungle"));
+//        list.add(new Question("Where do you put your cloth?", "daraz", "house", "room", "earth","daraz"));
 
+        DbHelper db=new DbHelper(this);
+        list=db.getAllQuestions();
 
         // Option button event listner
         for(int i=0;i<4;i++){
@@ -64,13 +68,18 @@ public class activity_playground extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 next.setEnabled(true);
-                next.setAlpha((float) 0.7);
+                next.setAlpha(0.7f);
                 enableOption(true);
                 position++;
 
                 if(position==list.size()){
+                    Intent intent=new Intent(activity_playground.this,activity_score.class);
+                    intent.putExtra("score",score);
+                    intent.putExtra("total",list.size());
+                    startActivity(intent);
                     return;
                 }
+
                 count=0;
                 playAnim(tvQuestion,0,list.get(position).getQuestion());
             }
@@ -105,6 +114,8 @@ public class activity_playground extends AppCompatActivity {
         }
     }
 
+
+    // Animation start
     private void playAnim(final View view, final int value, final String data){
         view.animate().alpha(value).scaleX(value).scaleY(value).setDuration(500).setStartDelay(100)
                 .setInterpolator(new DecelerateInterpolator()).setListener(new Animator.AnimatorListener() {

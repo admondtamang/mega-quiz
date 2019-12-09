@@ -23,7 +23,6 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     SQLiteDatabase db;
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         this.db=db;
@@ -38,21 +37,22 @@ public class DbHelper extends SQLiteOpenHelper {
                 QuestionsTable.COLUMN_ANS + " INTEGER" +
                 ")";
         db.execSQL(SQL_CREATE_QUESTIONS_TABLE);
-//        fillQuestionsTable();
+        fillQuestionsTable();
     }
 
-//    private void fillQuestionsTable() {
-//        Question q1 = new Question("A is correct", "A", "B", "C","D", 1);
-//        addQuestion(q1);
-//        Question q2 = new Question("B is correct", "A", "B", "C", "D",2);
-//        addQuestion(q2);
-//        Question q3 = new Question("C is correct", "A", "B", "C","D", 3);
-//        addQuestion(q3);
-//        Question q4 = new Question("A is correct again", "A", "B", "C","D", 1);
-//        addQuestion(q4);
-//        Question q5 = new Question("B is correct again", "A", "B", "C","D", 2);
-//        addQuestion(q5);
-//    }
+    // Adding auestion and option for filling table
+    private void fillQuestionsTable() {
+        Question q1 = new Question("Where do you live?", "Moon", "house", "room", "earth","earth");
+        addQuestion(q1);
+        Question q2 = new Question("Where do you live in?", "jungle", "house", "room", "earth","room");
+        addQuestion(q2);
+        Question q3 = new Question("Where do monkey live?", "jungle", "house", "room", "earth","jungle");
+        addQuestion(q3);
+        Question q4 = new Question("Where do you put your cloth?", "daraz", "house", "room", "earth","daraz");
+        addQuestion(q4);
+    }
+
+    //Add question to database
     private void addQuestion(Question question) {
         ContentValues cv = new ContentValues();
         cv.put(QuestionsTable.COLUMN_QUESTION, question.getQuestion());
@@ -86,6 +86,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS " + QuestionsTable.TABLE_NAME);
+        onCreate(db);
     }
 }
