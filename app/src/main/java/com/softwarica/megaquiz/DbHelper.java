@@ -34,7 +34,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 QuestionsTable.COLUMN_OPTION2 + " TEXT, " +
                 QuestionsTable.COLUMN_OPTION3 + " TEXT, " +
                 QuestionsTable.COLUMN_OPTION4 + " TEXT, " +
-                QuestionsTable.COLUMN_ANS + " INTEGER" +
+                QuestionsTable.COLUMN_ANS + " TEXT" +
                 ")";
         db.execSQL(SQL_CREATE_QUESTIONS_TABLE);
         fillQuestionsTable();
@@ -50,6 +50,9 @@ public class DbHelper extends SQLiteOpenHelper {
         addQuestion(q3);
         Question q4 = new Question("Where do you put your cloth?", "daraz", "house", "room", "earth","daraz");
         addQuestion(q4);
+        Question q5 = new Question("Where do you put your cloth?", "daraz", "house", "room", "earth","daraz");
+        addQuestion(q5);
+
     }
 
     //Add question to database
@@ -59,6 +62,7 @@ public class DbHelper extends SQLiteOpenHelper {
         cv.put(QuestionsTable.COLUMN_OPTION1, question.getOption1());
         cv.put(QuestionsTable.COLUMN_OPTION2, question.getOption2());
         cv.put(QuestionsTable.COLUMN_OPTION3, question.getOption3());
+        cv.put(QuestionsTable.COLUMN_OPTION4, question.getOption4());
         cv.put(QuestionsTable.COLUMN_ANS, question.getAns());
         db.insert(QuestionsTable.TABLE_NAME, null, cv);
     }
@@ -75,7 +79,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 question.setOption1(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION1)));
                 question.setOption2(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION2)));
                 question.setOption3(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION3)));
-//                question.setAns(c.getInt(c.getColumnIndex(QuestionsTable.COLUMN_ANS)));
+                question.setOption4(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_OPTION4)));
+                question.setAns(c.getString(c.getColumnIndex(QuestionsTable.COLUMN_ANS)));
                 questionList.add(question);
             } while (c.moveToNext());
         }

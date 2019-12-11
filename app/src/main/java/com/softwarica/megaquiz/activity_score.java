@@ -1,6 +1,8 @@
 package com.softwarica.megaquiz;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,8 +24,16 @@ public class activity_score extends AppCompatActivity {
         total=findViewById(R.id.tvTotal);
         btnDone=findViewById(R.id.btnDone);
 
-        score.setText(String.valueOf(getIntent().getIntExtra("score",0)));
-        total.setText("/"+String.valueOf(getIntent().getIntExtra("total",0)));
+        Intent intent = getIntent();
+        score.setText(intent.getStringExtra("score"));
+        total.setText(intent.getStringExtra("total"));
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(activity_score.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }

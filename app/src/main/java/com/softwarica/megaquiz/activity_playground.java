@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.softwarica.megaquiz.Model.Question;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class activity_playground extends AppCompatActivity {
@@ -42,14 +44,10 @@ public class activity_playground extends AppCompatActivity {
         optionConatiner=findViewById(R.id.optionContainer);
         noOfQuestion=findViewById(R.id.noOfQuestion);
 
-        // Question added into array list
-//        list.add(new Question("Where do you live?", "jungle", "house", "room", "earth","earth"));
-//        list.add(new Question("Where do you live in?", "jungle", "house", "room", "earth","room"));
-//        list.add(new Question("Where do monkey live?", "jungle", "house", "room", "earth","jungle"));
-//        list.add(new Question("Where do you put your cloth?", "daraz", "house", "room", "earth","daraz"));
-
+        // Gets all data from database
         DbHelper db=new DbHelper(this);
         list=db.getAllQuestions();
+        Collections.shuffle(list);
 
         // Option button event listner
         for(int i=0;i<4;i++){
@@ -72,11 +70,15 @@ public class activity_playground extends AppCompatActivity {
                 enableOption(true);
                 position++;
 
+                String size, actual;
+                actual = score + "/";
+                size = list.size() + "";
                 if(position==list.size()){
                     Intent intent=new Intent(activity_playground.this,activity_score.class);
-                    intent.putExtra("score",score);
-                    intent.putExtra("total",list.size());
+                    intent.putExtra("score", actual);
+                    intent.putExtra("total", size);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.goup, R.anim.godown);
                     return;
                 }
 
@@ -117,7 +119,7 @@ public class activity_playground extends AppCompatActivity {
 
     // Animation start
     private void playAnim(final View view, final int value, final String data){
-        view.animate().alpha(value).scaleX(value).scaleY(value).setDuration(500).setStartDelay(100)
+        view.animate().alpha(value).scaleX(value).scaleY(value).setDuration(500).setStartDelay(10)
                 .setInterpolator(new DecelerateInterpolator()).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -132,6 +134,7 @@ public class activity_playground extends AppCompatActivity {
                     }else if(count==3) {
                         option=list.get(position).getOption4();
                     }
+                    next.setEnabled(false);
                     playAnim(optionConatiner.getChildAt(count),0,option);
                     count++;
                 }

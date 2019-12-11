@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity_playground"></activity>
+        <activity android:name=".activity_score"></activity>
     </application>
 
 </manifest>
